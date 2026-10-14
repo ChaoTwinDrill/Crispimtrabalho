@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de usuários</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: #f1f5f9;
+            color: #172033;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .cabecalho {
+            margin-bottom: 28px;
+        }
+
+        .cabecalho h1 {
+            margin: 0 0 8px;
+            color: #172554;
+            font-size: 30px;
+        }
+
+        .cabecalho p {
+            margin: 0;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .painel {
+            margin-bottom: 28px;
+            padding: 28px;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            background: #ffffff;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+        }
+
+        .painel h2 {
+            margin: 0 0 22px;
+            color: #1e293b;
+            font-size: 20px;
+        }
+
+        .formulario {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .campo.completo {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            color: #334155;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        input {
+            width: 100%;
+            min-height: 44px;
+            padding: 11px 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+            background: #ffffff;
+            color: #0f172a;
+            font: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .acoes {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 4px;
+        }
+
+        button {
+            min-height: 44px;
+            padding: 0 22px;
+            border: 0;
+            border-radius: 8px;
+            background: #2563eb;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 700;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .tabela-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        thead {
+            background: #f8fafc;
+        }
+
+        th, td {
+            padding: 15px 14px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        th {
+            color: #475569;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        td {
+            color: #334155;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .vazio {
+            padding: 26px 14px;
+            color: #64748b;
+            text-align: center;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 24px 12px;
+            }
+
+            .cabecalho h1 {
+                font-size: 25px;
+            }
+
+            .painel {
+                padding: 20px 16px;
+            }
+
+            .formulario {
+                grid-template-columns: 1fr;
+            }
+
+            .campo.completo, .acoes {
+                grid-column: auto;
+            }
+
+            .acoes button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<main class="container">
+    <header class="cabecalho">
+        <h1>Cadastro de usuários</h1>
+        <p>Cadastre e consulte as informações dos usuários.</p>
+    </header>
+
+    <section class="painel">
+        <h2>Novo usuário</h2>
+        <form id="usuarioForm" class="formulario" th:action="@{/usuarios}" th:object="${usuarioModel}" method="post">
+            <div class="campo completo">
+                <label for="nomeUsuario">Nome completo</label>
+                <input type="text" id="nomeUsuario" th:field="*{nomeUsuario}" placeholder="Digite o nome completo" required>
+            </div>
+            <div class="campo">
+                <label for="cpf">CPF</label>
+                <input type="text" id="cpf" th:field="*{cpf}" placeholder="000.000.000-00" inputmode="numeric" maxlength="14">
+            </div>
+            <div class="campo">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" th:field="*{email}" placeholder="exemplo@email.com">
+            </div>
+            <div class="campo">
+                <label for="telefone">Telefone</label>
+                <input type="tel" id="telefone" th:field="*{telefone}" placeholder="(00) 00000-0000" maxlength="15">
+            </div>
+            <div class="campo">
+                <label for="dataNascimento">Data de nascimento</label>
+                <input type="date" id="dataNascimento" th:field="*{dataNascimento}">
+            </div>
+            <div class="campo completo">
+                <label for="nomeMae">Nome da mãe</label>
+                <input type="text" id="nomeMae" th:field="*{nomeMae}" placeholder="Digite o nome completo da mãe">
+            </div>
+            <div class="campo completo">
+                <label for="endereco">Endereço</label>
+                <input type="text" id="endereco" th:field="*{endereco}" placeholder="Rua, número, bairro e cidade">
+            </div>
+            <div class="acoes">
+                <button id="salvarUsuario" type="submit">Salvar usuário</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="painel">
+        <h2>Usuários cadastrados</h2>
+        <div class="tabela-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome do usuário</th>
+                    <th>CPF</th>
+                    <th>E-mail</th>
+                    <th>Telefone</th>
+                    <th>Data de nascimento</th>
+                    <th>Nome da mãe</th>
+                    <th>Endereço</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="usuario : ${usuarios}">
+                    <td th:text="${usuario.id}"></td>
+                    <td th:text="${usuario.nomeUsuario}"></td>
+                    <td th:text="${usuario.cpf != null && !usuario.cpf.isBlank() ? usuario.cpf : '—'}"></td>
+                    <td th:text="${usuario.email != null && !usuario.email.isBlank() ? usuario.email : '—'}"></td>
+                    <td th:text="${usuario.telefone != null && !usuario.telefone.isBlank() ? usuario.telefone : '—'}"></td>
+                    <td th:text="${usuario.dataNascimento != null ? #temporals.format(usuario.dataNascimento, 'dd/MM/yyyy') : '—'}"></td>
+                    <td th:text="${usuario.nomeMae != null && !usuario.nomeMae.isBlank() ? usuario.nomeMae : '—'}"></td>
+                    <td th:text="${usuario.endereco != null && !usuario.endereco.isBlank() ? usuario.endereco : '—'}"></td>
+                </tr>
+                <tr th:if="${usuarios == null || usuarios.isEmpty()}">
+                    <td class="vazio" colspan="8">Nenhum usuário cadastrado ainda.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+<script>
+    document.getElementById("usuarioForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: form.method,
+            body: formData
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = "/usuarios/pesquisa";
+            } else {
+                alert("Não foi possível salvar o usuário.");
+            }
+        }).catch(() => {
+            alert("Erro ao salvar o usuário.");
+        });
+    });
+</script>
+</body>
+</html>
